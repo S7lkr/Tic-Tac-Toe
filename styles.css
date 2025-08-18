@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#game-container {
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    text-align: center;
+    width: 25em;
+    height: auto;
+    /* border: 2px solid black; */
+}
+body {
+    background-color:darkkhaki;
+}
+.tic-tac-toe {
+    width: 60em;
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+}
+div.header {
+    display: flex;
+    gap: 2em;
+    max-width: 400px;
+    margin: 0 auto;
+    justify-content: center;
+    padding-top: 2em;
+    /* padding-bottom: 4em; */
+}
+h1 {
+    display: inline-block;
+    font-size: 2.3em;
+    font-weight: bold;
+}
+#word1 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: yellow;
+}
+#word2 {
+    font-family: 'Courier New', Courier, monospace;
+    color: forestgreen;
+}
+#word3 {
+    font-style: italic;
+    font-weight: bold;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: royalblue;
+}
+div.round-status h3 {
+    font-size: 1.6em;
+    margin-top: 1em;
+}
+.cell-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    width: 220px;
+    gap: 5px;
+    margin: 0 auto;
+    margin-top: 1em;
+    margin-bottom: 2em;
+    /* border: 2px solid black; */
+}
+.cell {
+    width: 70px;
+    height: 70px;
+    font-size: 3em;
+    font-family: cursive;
+    background-color: antiquewhite;
+    border: 2px solid black;
+    box-shadow: 0.4em 0.4em 0.5em 0 rgb(0, 0, 0, 0.8);
+    cursor: pointer;
+}
+.cell:hover {
+    border: 3px solid black;
+    background-color: whitesmoke;
+    width: 75px;
+    height: 75px;
+    border-radius: 0.1em;
+    
+}
+div.info {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    align-items: center;
+}
+#message {
+    font-size: 1.5em;
+}
+#player {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 3em;
+}
+div.buttons {
+    width: 12em;
+    height: 8em;
+    margin: 0 auto;
+}
+div.buttons button {
+    width: 8.2em;
+    height: auto;
+    margin-top: 1em;
+    padding: 0.3em;
+    border: 2px solid black;
+    border-radius: 0.2em;
+}
+.buttons button a {
+    text-decoration: none;
+    color: black;
+    font-size: 1.2em;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.buttons button#next:hover {
+    background-color: lightgreen;
+    width: 8.5em;
+    height: auto;
+    border: 3px solid black;
+    box-shadow: 0.2em 0.2em 0.6em 0 rgb(0, 0, 0, 0.5);
+}
+.buttons button#restart:hover {
+    background-color: red;
+    width: 8.5em;
+    height: auto;
+    border: 3px solid black;
+    box-shadow: 0.2em 0.2em 0.6em 0 rgb(0, 0, 0, 0.5);
+}
+.score-container {
+    width: 15em;
+    height: auto;
+    padding: 6.5em 0 0 1em;
+    /* border: 2px solid black; */
+}
+h2#score {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 2em;
+    color: red;
+    font-weight: bolder;
+    font-style: italic;
+}
+h3.players {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 2em;
+    font-weight: bold;
+}
