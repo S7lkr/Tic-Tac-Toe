@@ -3,9 +3,14 @@ const cellElements = document.querySelectorAll('div.cell-container div');
 const messageElement = document.querySelector('div.info #message');
 const infoPlayerElement = document.querySelector('div.info h1#player');
 
+// Rules
+const rulesButtonElement = document.getElementById('rules-btn');
+
+// Next & Restart Buttons
 const nextRoundButtonElement = document.querySelector('.buttons button#next');
 const restartButtonElement = document.querySelector('.buttons button#restart');
 
+// Score table
 const xScoreElement = document.getElementById('playerX');
 const oScoreElement = document.getElementById('playerO');
 
@@ -35,6 +40,22 @@ let winnerCells;
 
 setGameConfiguration();
 
+function switchRulesBtn () {
+    const rulesTextElement = document.getElementById('rules-text');
+    if (rulesTextElement.style.display === 'block') {
+        rulesTextElement.style.display = 'none';
+        rulesButtonElement.textContent = 'Show Rules'
+    } else {
+        rulesTextElement.style.display = 'block';
+        rulesButtonElement.textContent = 'Hide Rules'
+    }
+    // rulesTextElement.style.display = 'block'
+    // ? rulesTextElement.style.display === 'none'
+    // : rulesTextElement.style.display = 'none';
+};
+
+rulesButtonElement.addEventListener('click', switchRulesBtn);
+
 function setGameConfiguration() {
     gameIsRunning = true;
     roundElement.textContent = `Round ${round}/5`;
@@ -47,6 +68,7 @@ function setGameConfiguration() {
     restartButtonElement.addEventListener('click', restartGame);
     nextRoundButtonElement.id = 'next';
 }
+
 function clickCell(event) {
     if (!gameIsRunning || roundWon || gameWon) {
         return;
@@ -65,6 +87,7 @@ function clickCell(event) {
     checkWinCondition();
     switchPlayer();
 }
+
 function checkWinCondition() {
     const playedCells = cells.filter(el => el !== '').length;
     if (playedCells < 3) {     // at least 3 letters are needed in order 'checkWIn' to be initiated
@@ -99,10 +122,11 @@ function checkWinCondition() {
             gameIsRunning = false;
             nextRoundButtonElement.id = 'next-22';
         } else {
-            messageElement.textContent = 'Round won by:'
-            infoPlayerElement.textContent = xScore > oScore
-                ? 'X'
-                : 'Y';
+            messageElement.textContent = 'Round won by:';
+            infoPlayerElement.textContent = playerTurn;
+            // infoPlayerElement.textContent = xScore > oScore
+            //     ? 'X'
+            //     : 'O';
         }
         return;
     }
