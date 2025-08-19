@@ -5,7 +5,7 @@ A small JS project/game, named Tic Tac Toe. At this stage it consists of 3 files
 How to Test/run on a local server?
 ==================================
 
-1> Create a new folder on C: drive. Open CMD and enter its path: `cd C:\<folder location>`. Then type: `git clone https://github.com/S7lkr/Tic-Tac-Toe.git`
+1> Create a new folder on C: drive. Open CMD and navigate to its location: `cd C:\<folder path>`. Then type: `git clone https://github.com/S7lkr/Tic-Tac-Toe.git`
 
 2> Have Node.js installed in your system. Check if you have it installed: `node --version` or `node -v`
 
