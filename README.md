@@ -7,11 +7,10 @@ How to Test/run on a local server?
 
 You can run your file in http-server.
 
-1> Have Node.js installed in your system. Check if you have it installed in CMD:
-`node --version` or `node -v`
+1> Have Node.js installed in your system. Check if you have it installed in CMD: `node --version` or `node -v`
 
-2> Run the command "npm install http-server -g"
+2> Run the command `npm install http-server -g`
 
-3> Navigate to the specific path of your file folder, type -> "cd C:\<folder location>" and run the command "http-server" to start a local server
+3> Navigate to the specific path of your file folder. In CMD type -> "cd C:\<folder location>" and run the command `http-server` to start a local server
 
 4> Go to your browser and type in address bar "localhost:8080". Your Application should run now locally on port 8080.
