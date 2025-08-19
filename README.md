@@ -7,7 +7,8 @@ How to Test/run on a local server?
 
 You can run your file in http-server.
 
-1> Have Node.js installed in your system. Check if you have it installed in CMD with "node --version" or "node -v"
+1> Have Node.js installed in your system. Check if you have it installed in CMD:
+`node --version` or `node -v`
 
 2> Run the command "npm install http-server -g"
 
