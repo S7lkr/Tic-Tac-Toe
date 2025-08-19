@@ -29,10 +29,33 @@ div.header {
     padding-top: 0.5em;
     /* padding-bottom: 4em; */
 }
+#rules-text {
+    font-family: 'Times New Roman', Times, serif;
+    background-color: beige;
+    display: none;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 0.2em 0.2em 0.8em 0 rgb(0, 0, 0, 0.8);
+    margin: 1.5em auto;
+    padding: 0.5em;
+    max-width: 75%;
+}
 h1 {
     display: inline-block;
     font-size: 2.3em;
     font-weight: bold;
+}
+p {
+    text-align: justify;
+    line-height: 1.2em;
+    margin-bottom: 0.75em;
+}
+.rules button {
+    display: block;
+    margin: 0 auto;
+    padding: 0.4em;
+    border-radius: 0.3em;
+    
 }
 #word1 {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
@@ -104,7 +127,7 @@ div.buttons button {
     height: auto;
     margin-top: 1em;
     padding: 0.3em;
-    border: 2px solid black;
+    border: 1px solid black;
     border-radius: 0.2em;
 }
 .buttons button a {
@@ -113,18 +136,20 @@ div.buttons button {
     font-size: 1.2em;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-.buttons button#next:hover {
-    background-color: lightgreen;
-    width: 8.5em;
-    height: auto;
-    border: 3px solid black;
+.rules button:hover {
+    background-color: rgb(241, 217, 78);
+    border: 2px solid black;
     box-shadow: 0.2em 0.2em 0.6em 0 rgb(0, 0, 0, 0.5);
 }
+.buttons button#next:hover {
+    background-color: lightgreen;
+    border: 2px solid black;
+    box-shadow: 0.2em 0.2em 0.6em 0 rgb(0, 0, 0, 0.5);
+}
+
 .buttons button#restart:hover {
-    background-color: red;
-    width: 8.5em;
-    height: auto;
-    border: 3px solid black;
+    background-color: lightcoral;
+    border: 2px solid black;
     box-shadow: 0.2em 0.2em 0.6em 0 rgb(0, 0, 0, 0.5);
 }
 .score-container {
