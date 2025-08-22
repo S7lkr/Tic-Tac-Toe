@@ -15,19 +15,68 @@
 		<h1 id="word3">Toe</h1>
 	</div>
 
+	<!-- How to play -->
 	<section class="rules">
 		<div id="rules-text">
 			<h2>How to play:</h2>
-			<br>
 			<p>Tic-tac-toe is a paper-and-pencil game for two players who take turns marking the spaces in a three-by-three grid, one with Xs and the other with Os. The first player is traditionally designated as X, and the second player is O. Players alternate placing their marks in empty squares on the grid. The objective is to be the first player to get three of their marks in a row, either horizontally, vertically, or diagonally. A player wins when they successfully mark all three spaces of a row, column, or diagonal.</p>
 			<p>If all nine squares are filled and neither player has achieved three in a row, the game ends in a draw, also known as a "cat game". The game is considered a solved game, meaning that if both players play optimally, the game will always end in a draw. This outcome is a result of the game's strategic nature, where the best play from both parties leads to a forced draw.</p>
 			<p>The game can be played on larger grids, such as 4x4 or 5x5, where the goal changes to getting four or five in a row, respectively. In these variants, the first player still goes first, and players alternate placing their marks until a row is completed or the board is full. For grids of 6x6 or larger, the goal is often set to five in a row to maintain balance.</p>
 			<p>A common strategy for the first player is to take a corner square, as it offers the most opportunities for creating winning lines and minimizes the opponent's choices. The second player should respond by taking the center square if the first player took a corner, or a corner if the first player took the center, to avoid losing. Players should also focus on blocking their opponent's potential winning moves and creating forks—positions where they have two ways to win on their next turn.</p>
 		</div>
-		<br>
 		<button type="button" id="rules-btn">Show Rules</button>
 	</section>
+
+	<section id="main-menu-container">
+		
+		<!-- Game Mode menu -->
+		<div class="submenu-container" id="game-mode">
+			<h2>Game mode:</h2>
+			<form action="#" class="form-1">
+				<input type="radio" name="game-mode" id="pvc" value="player-vs-computer">
+				<label for="pvc">Player vs PC</label>
+				<br>
+				<input type="radio" name="game-mode" id="pvp" value="player-vs-player">
+				<label for="pvp">Player vs Player</label>
+				<br>
+				<input type="radio" name="game-mode" id="cvc" value="computer-vs-computer">
+				<label for="cvc">PC vs PC</label>
+			</form>
+		</div>
+
+		<!-- Player Select menu -->
+		<div class="submenu-container" id="player-selection">
+			<h2>Choose player:</h2>
+			<form action="#" class="form-2">
+				<div class="player-option">
+					<input type="radio" name="player-choice" id="choice-X" value="X">
+					<label for="choice-X">X</label>
+				</div>
+				<div class="player-option">
+					<input type="radio" name="player-choice" id="choice-O" value="O">
+					<label for="choice-O">O</label>
+				</div>
+			</form>
+		</div>
+	</section>
+
+	<!-- Launch Game Button -->
+	<div id="start-btn-container">
+		<button type="button">START</button>
+	</div>
+
+	<!-- Game Section -->
 	<div class="tic-tac-toe">
+		<section id="game-mode-section">
+			<h2>Game mode:</h2>
+			<p></p>
+			<div class="buttons">
+				<!-- <button id="next">Next Round</button> -->
+				<button id="restart-btn">Restart Game</button>
+				<button id="main-menu-btn">Main Menu</button>
+			</div>
+		</section>
+
 		<section id="game-container">
 			<div class="round-status">
 				<h3></h3>
@@ -43,20 +92,19 @@
 				<div id="7" class="cell"></div>
 				<div id="8" class="cell"></div>
 			</div>
-			<div class="info">
-				<h2 id="message">Player Turn: </h2>
-				<h1 id="player"></h1>
+			<div id="turn-info-container">
+				<span id="player"></span>
+				<span id="round-message">'s turn!</span>
 			</div>
 			<div class="buttons">
 				<button id="next">Next Round</button>
-				<button id="restart">Restart Game</button>
 			</div>
 		</section>
-		<section class="score-container">
+		<section id="score-container">
 			<h2 id="score">Score:</h2>
 			<br>
-			<h3 class="players" id="playerX"></h3>
-			<h3 class="players" id="playerO"></h3>
+			<h3 class="players">X - <span id="playerX"></span></h3>
+			<h3 class="players">O - <span id="playerO"></span></h3>
 		</section>
 	</div>
 </body>
