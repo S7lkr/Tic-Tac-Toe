@@ -23,9 +23,10 @@ h2 {
 }
 
 p {
-    text-align: justify;
+    text-align: center;
     line-height: 1.2em;
-    margin-bottom: 0.75em;
+    margin-bottom: 3em;
+    /* font-size: 1.2em; */
 }
 
 /* ---------Header----------- */
