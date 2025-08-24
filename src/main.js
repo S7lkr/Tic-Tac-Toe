@@ -133,6 +133,7 @@ function playerMove(event) {
 
     winCheck();
     switchPlayerMark();
+
     if (gameMode === 'pvc') {
         computerMove();
     }  
@@ -142,15 +143,22 @@ function computerMove() {
     if (!gameIsRunning || roundWon || gameOver) {
         return;
     }
-    let emptyCells = [];
-    Array.from(dom.cellElements).forEach(cell => cell.textContent == '' ? emptyCells.push(Number(cell.id)) : null);
+    let emptyCellIndexes = [];
+    Array.from(dom.cellElements).forEach(cell => cell.textContent == '' ? emptyCellIndexes.push(Number(cell.id)) : null);
 
-    let randomCellIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-    cells[randomCellIndex] = currentPlayerMark;                                 // mark cell in array
-    dom.cellElements.item(randomCellIndex).textContent = currentPlayerMark;     // pc marks cell in html
+    // take one index of emptyCellIndexes (free cell to mark)
+    let randomCellIndex = emptyCellIndexes[Math.floor(Math.random() * emptyCellIndexes.length)];
+    // mark cell in array
+    cells[randomCellIndex] = currentPlayerMark;
 
-    winCheck();
-    switchPlayerMark();
+    dom.cellElements.forEach(cell => cell.removeEventListener('click', playerMove));
+
+    setTimeout(() => {
+        dom.cellElements.item(randomCellIndex).textContent = currentPlayerMark;             // pc marks cell in html
+        winCheck();
+        switchPlayerMark();
+        dom.cellElements.forEach(cell => cell.addEventListener('click', playerMove));
+    }, 500);
 }
 
 function winCheck() {
