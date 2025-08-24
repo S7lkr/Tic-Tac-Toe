@@ -1,14 +1,17 @@
 import * as dom from './dom.js';
 
 
+// ----------------- Global values -----------------
+
 // Game mode & Player
 const modes = {
     'pvc': 'Player vs Computer',
     'pvp': 'Player vs Player',
     'cvc': 'Computer vs Computer',
 }
-let playerMark;
-let gameMode;
+let initialPlayerMark = '';
+let currentPlayerMark = '';
+let gameMode = '';
 
 // Winner cell indexes:
 let cells = ['', '', '', '', '', '', '', '', ''];
@@ -36,27 +39,25 @@ let gameIsRunning = false;
 let roundWon = false;
 let gameOver = false;
 
-initializeGame();
+let pcWon = false;
+
+main();
 
 // ---------------------------- Functions -------------------------------
 
-
 // Event listeners
-function initializeGame() {
+function main() {
+    // Set game options (initialize settings)
     dom.rulesButtonElement.addEventListener('click', showHideRules);
     dom.gameModeElements.forEach(el => el.addEventListener('change', gameModeSelector));
     dom.playerChoicesElement.forEach(el => el.addEventListener('change', playerSelector));
-    dom.startButtonElement.addEventListener('click', launchGame);
-    main();
-    
-}
-
-function main() {
-    gameIsRunning = true;
     dom.roundElement.textContent = `Round ${round}/5`;
     dom.xScoreElement.textContent = xScore;
     dom.oScoreElement.textContent = oScore;
-    dom.playerMarkElement.textContent = playerMark;
+        
+    // Start game
+    dom.startButtonElement.addEventListener('click', launchGame);
+    gameIsRunning = true;
 
     dom.cellElements.forEach(cellEl => cellEl.addEventListener('click', playerMove));
     dom.nextRoundButtonElement.addEventListener('click', nextRound);
@@ -75,18 +76,25 @@ function showHideRules () {
     }
 }
 
+function showNextBtn(status=true) {
+    status ? dom.nextRoundButtonElement.classList.remove('hidden') : dom.nextRoundButtonElement.classList.add('hidden');
+}
+
 // GAME MODE
 function gameModeSelector(event) {
     gameModeSelected = true;
-    dom.gameModeElement.textContent = modes[event.target.id];   // 'pvc', 'pvp' or 'cvc'
-    gameMode = modes[gameModeElement.textContent];
+    // 'Player vs Player', 'Player vs Computer' or 'Computer vs Computer'
+    dom.showGameModeElement.textContent = modes[event.target.id];
+    dom.pHiddenElement.textContent = event.target.id;
+    gameMode = dom.pHiddenElement.textContent;
 }
 
 // Player Choice
 function playerSelector(event) {
     playerSelected = true;
     dom.playerMarkElement.textContent = event.target.value;     // X or O
-    playerMark = dom.playerMarkElement.textContent;
+    initialPlayerMark = dom.playerMarkElement.textContent;
+    currentPlayerMark = dom.playerMarkElement.textContent;
 }
 
 function launchGame() {
@@ -96,38 +104,62 @@ function launchGame() {
     dom.mainMenuElement.style.display = 'none';
     dom.startButtonElement.className = 'hidden';
     dom.gameElement.style.display = 'flex';
+    showNextBtn(false);
+}
+
+function cellEmpty(cell) {
+    return cell.textContent === '';
+}
+
+function moveReject(cell) {
+    cell.style.border = '4px solid red';
+    cell.style.borderRadius = '0.1em';
+    setTimeout(() => {
+        cell.style.border = '2px solid black';
+    }, 300);
 }
 
 function playerMove(event) {
     if (!gameIsRunning || roundWon || gameOver) {
         return;
     }
-    
     const cell = event.target;          // the CELL which is 'clicked'
-    if (cell.textContent === 'X' || cell.textContent === 'O') {
-        cell.style.border = '4px solid red';
-        cell.style.borderRadius = '0.1em';
-        setTimeout(() => {
-            cell.style.border = '2px solid black';
-        }, 500);
+    if (!cellEmpty(cell)) {
+        moveReject(cell);
         return;
     }
-    cell.textContent = playerMark;      // fill cell's textContent with 'X' or 'O'
-    cells[cell.id] = playerMark;      // fill Array cells with 'X' or 'O'
+    cell.textContent = currentPlayerMark;      // fill cell's textContent with 'X' or 'O'
+    cells[cell.id] = currentPlayerMark;      // fill Array cells with 'X' or 'O'
 
     winCheck();
     switchPlayerMark();
+    if (gameMode === 'pvc') {
+        computerMove();
+    }  
+}
 
-    // console.log(cells);
+function computerMove() {
+    if (!gameIsRunning || roundWon || gameOver) {
+        return;
+    }
+    let emptyCells = [];
+    Array.from(dom.cellElements).forEach(cell => cell.textContent == '' ? emptyCells.push(Number(cell.id)) : null);
+
+    let randomCellIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    cells[randomCellIndex] = currentPlayerMark;                                 // mark cell in array
+    dom.cellElements.item(randomCellIndex).textContent = currentPlayerMark;     // pc marks cell in html
+
+    winCheck();
+    switchPlayerMark();
 }
 
 function winCheck() {
     const playedCells = cells.filter(el => el !== '').length;
-    if (playedCells < 3) {     // at least 3 letters are needed in order 'checkWin' to be initiated
+    if (playedCells < 3) {     // at least 3 letters are needed in order 'winCheck' to be initiated
         return;
     }
     for (let i = 0; i < winCombos.length; i++) {
-        let combination = winCombos[i];    // [0, 1, 2]
+        let combination = winCombos[i];    // [0, 1, 2] or [3, 4, 5] or etc.
         let combo = [];
 
         combination.forEach(ind => combo.push(cells[ind]));
@@ -143,12 +175,14 @@ function winCheck() {
     }
     // Round Won
     if (roundWon) {
-        switch (playerMark) {
+        // Check if Player or Computer won the round
+        pcWon = initialPlayerMark != currentPlayerMark ? true : false;
+
+        switch (currentPlayerMark) {
             case 'X': xScore += 1; dom.xScoreElement.textContent = xScore; break;   // winner is the current player
             case 'O': oScore += 1; dom.oScoreElement.textContent = oScore; break;
         }
-
-        // Game over -> Win
+        // Game over with WIN
         if (xScore === 3 || oScore === 3) {
             dom.messageElement.textContent = " is the Winner!!";
             gameOver = true;
@@ -156,11 +190,11 @@ function winCheck() {
             dom.nextRoundButtonElement.id = 'next-22';
         } else {
             dom.messageElement.textContent = " wins the round!";
+            showNextBtn(true);
         }
         return;
     }
-
-    // Game over -> Draw
+    // Game over with DRAW
     if (playedCells === 9) {               // if round ended,
         if (round === 5) {                 // and is the last
             dom.messageElement.textContent = " is the Winner!";
@@ -174,12 +208,13 @@ function winCheck() {
                 dom.playerMarkElement.textContent = '';
                 dom.messageElement.textContent = 'Game Over! Draw!';
             }
-            dom.nextRoundButtonElement.className = 'hidden';
+            // dom.nextRoundButtonElement.className = 'hidden';
             gameIsRunning = false;
             return;
         }
         dom.playerMarkElement.textContent = '';
         dom.messageElement.textContent = 'Round Draw!';
+        showNextBtn(true);
         roundWon = true;
     }
 }
@@ -188,8 +223,8 @@ function switchPlayerMark() {
     if (roundWon || gameOver || !gameIsRunning) {
         return;
     }
-    playerMark = playerMark === 'X' ? 'O' : 'X';
-    dom.playerMarkElement.textContent = playerMark;
+    currentPlayerMark = currentPlayerMark === 'X' ? 'O' : 'X';
+    dom.playerMarkElement.textContent = currentPlayerMark;
 }
 
 function nextRound() {
@@ -197,22 +232,29 @@ function nextRound() {
         return;
     }
     cells = ['', '', '', '', '', '', '', '', ''];
-    roundWon = false;
-    round += 1;
-
-    dom.playerMarkElement.textContent = playerMark;
-    dom.messageElement.textContent = "'s turn!"
-    dom.roundElement.textContent = `Round ${round}/5`;
     dom.cellElements.forEach(cell => cell.textContent = '');
+    round += 1;
+    dom.roundElement.textContent = `Round ${round}/5`;
+    showNextBtn(false);
 
-    unMarkWinCells(winnerCells);
+    dom.playerMarkElement.textContent = currentPlayerMark;
+    dom.messageElement.textContent = "'s turn!"
+    roundWon = false;
+
+    unMarkWinCells();
+    if (pcWon) {
+        pcWon = false;
+        computerMove();
+    }
 }
 
 function restartGame() {
     dom.cellElements.forEach(cell => cell.textContent = '');
     cells = ['', '', '', '', '', '', '', '', ''];
-    dom.playerMarkElement.textContent = playerMark;
+    dom.playerMarkElement.textContent = initialPlayerMark;
+    currentPlayerMark = initialPlayerMark;
     dom.messageElement.textContent = "'s turn!"
+
     gameIsRunning = true;
     roundWon = false;
     gameOver = false;
@@ -220,53 +262,37 @@ function restartGame() {
     dom.oScoreElement.textContent = oScore = 0;
     round = 1;
     dom.roundElement.textContent = `Round ${round}/5`;
-    dom.nextRoundButtonElement.className = '';
-    unMarkWinCells(winnerCells);
+
+    showNextBtn(false);
+    unMarkWinCells();
 }
 
 function mainMenu() {
+    restartGame();
+    dom.roundElement.textContent = 'Round ' + round + '/5';
     dom.mainMenuElement.style.display = 'flex';
     dom.startButtonElement.className = '';
     dom.gameElement.style.display = 'none';
 }
 
-function cellPainter(c1, c2, c3, color) {
+function markWinCells(winCells, color='orange') {
+    const [c1, c2, c3] = winCells;
     dom.cellElements.item(c1).style.backgroundColor = color;
     dom.cellElements.item(c2).style.backgroundColor = color;
     dom.cellElements.item(c3).style.backgroundColor = color;
 }
 
-function markWinCells(winCells, color='orange') {
-    const [cell1, cell2, cell3] = winCells;
-    cellPainter(cell1, cell2, cell3, color);
+function unMarkWinCells(color='antiquewhite') {
+    // const [cell1, cell2, cell3] = winCells;
+    dom.cellElements.forEach(el => el.style.backgroundColor = color);
 }
 
-function unMarkWinCells(winCells, color='antiquewhite') {
-    const [cell1, cell2, cell3] = winCells;
-    cellPainter(cell1, cell2, cell3, color);
-}
-
-
-// // TODO: Player vs Computer mode
-// const switchMark = () => {
-//     playerMark === 'X' ? playerMark = 'O' : playerMark = 'X';
-// }
-
-
-// // TODO: Player vs Computer mode
-// function computerMove() {
-//     let emptyCells = [];
-//     for (let i = 0; i < cells.length; i++) {
-//         if (cells[i] === '') {
-//             emptyCells.push(i);
-//         }
+// function shuffleEmptyCells(array) {
+//     let currentIndex = array.length;    
+//     while (currentIndex != 0) {
+//         let randomIndex = Math.floor(Math.random() * currentIndex);
+//         currentIndex--;
+//         [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
 //     }
-//     console.log(emptyCells);
-    
-//     const pcCell = Math.ceil(Math.random() * emptyCells.length - 1);
-//     console.log(pcCell);
-//     cells[pcCell] = playerTurn;
-//     document.getElementById(pcCell).textContent = playerTurn;
-//     switchMark();
-//     console.log(cells);
+//     return array;
 // }

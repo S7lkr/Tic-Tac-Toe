@@ -1,6 +1,7 @@
 // Rules
 export const rulesTextElement = document.getElementById('rules-text');
 export const rulesButtonElement = document.getElementById('rules-btn');
+export const pHiddenElement = document.querySelector('p.hidden');
 
 // ---------- Intro/Menu Section -----------
 
@@ -8,11 +9,9 @@ export const rulesButtonElement = document.getElementById('rules-btn');
 export const mainMenuElement = document.getElementById('main-menu-container');
 
 // Game Mode
-export const gameModeMenuElement = document.getElementById('game-mode');
 export const gameModeElements = document.querySelectorAll('input[name=game-mode]');
 
 // Player Select
-export const playerSelectMenuElement = document.getElementById('player-selection');
 export const playerChoicesElement = document.querySelectorAll('input[name=player-choice]');
 
 // Start Game
@@ -22,7 +21,7 @@ export const startButtonElement = document.getElementById('start-btn-container')
 
 // Main elements
 export const gameElement = document.querySelector('div.tic-tac-toe');
-export const gameModeElement = document.querySelector('#game-mode-section p');
+export const showGameModeElement = document.querySelector('#game-mode-section p');
 export const roundElement = document.querySelector('div.round-status h3');
 export const cellElements = document.querySelectorAll('div.cell-container div');
 

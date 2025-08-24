@@ -23,9 +23,9 @@ h2 {
 }
 
 p {
-    text-align: center;
+    text-align: start;
     line-height: 1.2em;
-    margin-bottom: 3em;
+    margin-bottom: 1em;
     /* font-size: 1.2em; */
 }
 
@@ -225,17 +225,14 @@ button {
 
 .buttons button#next:hover,
 .rules button:hover,
-.menu-btn-container button:hover,
 #start-btn-container button:hover {
     background-color: lightgreen;
-    /* border: 2px solid black; */
     box-shadow: 0.2em 0.2em 0.6em 0 rgb(0, 0, 0, 0.5);
 }
 
 .buttons button#restart-btn:hover,
 .buttons button#main-menu-btn:hover {
     background-color: lightcoral;
-    /* border: 2px solid black; */
     box-shadow: 0.2em 0.2em 0.6em 0 rgb(0, 0, 0, 0.5);
 }
 

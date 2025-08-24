@@ -27,6 +27,8 @@
 		<button type="button" id="rules-btn">Show Rules</button>
 	</section>
 
+	<p class="hidden"></p>
+
 	<section id="main-menu-container">
 		
 		<!-- Game Mode menu -->
@@ -40,7 +42,7 @@
 				<label for="pvp">Player vs Player</label>
 				<br>
 				<input type="radio" name="game-mode" id="cvc" value="computer-vs-computer">
-				<label for="cvc">PC vs PC</label>
+				<label for="cvc">PC vs PC (WIP)</label>
 			</form>
 		</div>
 
@@ -73,7 +75,7 @@
 			<div class="buttons">
 				<!-- <button id="next">Next Round</button> -->
 				<button id="restart-btn">Restart Game</button>
-				<button id="main-menu-btn">Main Menu</button>
+				<button type="submit" id="main-menu-btn">Main Menu</button>
 			</div>
 		</section>
 
@@ -97,7 +99,7 @@
 				<span id="round-message">'s turn!</span>
 			</div>
 			<div class="buttons">
-				<button id="next">Next Round</button>
+				<button id="next" class="hidden">Next Round</button>
 			</div>
 		</section>
 		<section id="score-container">
