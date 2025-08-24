@@ -42,13 +42,13 @@
 				<label for="pvp">Player vs Player</label>
 				<br>
 				<input type="radio" name="game-mode" id="cvc" value="computer-vs-computer">
-				<label for="cvc">PC vs PC (WIP)</label>
+				<label for="cvc">PC vs PC</label>
 			</form>
 		</div>
 
 		<!-- Player Select menu -->
 		<div class="submenu-container" id="player-selection">
-			<h2>Choose player:</h2>
+			<h2>Player:</h2>
 			<form action="#" class="form-2">
 				<div class="player-option">
 					<input type="radio" name="player-choice" id="choice-X" value="X">
@@ -62,19 +62,25 @@
 		</div>
 	</section>
 
+	<div id="show-mode-container">
+		<h3 id="selected-mode"></h3>
+		<h3 id="selected-player"></h3>
+	</div>
+
 	<!-- Launch Game Button -->
 	<div id="start-btn-container">
-		<button type="button">START</button>
+		<button type="button">START GAME</button>
 	</div>
 
 	<!-- Game Section -->
 	<div class="tic-tac-toe">
 		<section id="game-mode-section">
-			<h2>Game mode:</h2>
+			<h2>Actions:</h2>
 			<p></p>
 			<div class="buttons">
 				<!-- <button id="next">Next Round</button> -->
-				<button id="restart-btn">Restart Game</button>
+				<button id="stop-btn">Stop Game</button>
+				<button id="restart-btn">Reset Game</button>
 				<button type="submit" id="main-menu-btn">Main Menu</button>
 			</div>
 		</section>
