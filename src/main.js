@@ -47,21 +47,30 @@ main();
 
 // Event listeners
 function main() {
-    // Set game options (initialize settings)
-    dom.rulesButtonElement.addEventListener('click', showHideRules);
-    dom.gameModeElements.forEach(el => el.addEventListener('change', gameModeSelector));
-    dom.playerChoicesElement.forEach(el => el.addEventListener('change', playerSelector));
+    // Set initial game configuration
     dom.roundElement.textContent = `Round ${round}/5`;
     dom.xScoreElement.textContent = xScore;
     dom.oScoreElement.textContent = oScore;
+
+    // Initial (main menu) listeners
+    dom.rulesButtonElement.addEventListener('click', showHideRules);
+    dom.gameModeElements.forEach(el => el.addEventListener('change', gameModeSelector));
+    dom.playerChoicesElement.forEach(el => el.addEventListener('change', playerSelector));
+
         
-    // Start game
+    // Start game listener
     dom.startButtonElement.addEventListener('click', launchGame);
     gameIsRunning = true;
 
+    // Cell listeners
     dom.cellElements.forEach(cellEl => cellEl.addEventListener('click', playerMove));
+    dom.cellElements.forEach(cellEl => cellEl.addEventListener('mouseover', cellHover));
+    dom.cellElements.forEach(cellEl => cellEl.addEventListener('mouseout', cellUnHover));
+
+    // Button listeners
     dom.nextRoundButtonElement.addEventListener('click', nextRound);
-    dom.restartButtonElement.addEventListener('click', restartGame);
+    dom.stopGameButtonElement.addEventListener('click', stopGame);
+    dom.resetButtonElement.addEventListener('click', resetGame);
     dom.mainMenuButtonElement.addEventListener('click', mainMenu);
     dom.nextRoundButtonElement.id = 'next';
 }
@@ -80,13 +89,32 @@ function showNextBtn(status=true) {
     status ? dom.nextRoundButtonElement.classList.remove('hidden') : dom.nextRoundButtonElement.classList.add('hidden');
 }
 
+function cellHover(event) {
+    if (event.target.textContent != '') {
+        return;
+    } else {
+        event.target.textContent = currentPlayerMark.toLowerCase();
+        event.target.style.color = '#827f81ff';
+    }
+}
+
+function cellUnHover(event) {
+    const cell = document.getElementById(event.target.id)
+    cell.textContent = cells[event.target.id];
+    cell.style.color = 'black';
+}
+
 // GAME MODE
 function gameModeSelector(event) {
     gameModeSelected = true;
     // 'Player vs Player', 'Player vs Computer' or 'Computer vs Computer'
-    dom.showGameModeElement.textContent = modes[event.target.id];
+    dom.showModeElement.textContent = modes[event.target.id];
     dom.pHiddenElement.textContent = event.target.id;
     gameMode = dom.pHiddenElement.textContent;
+    
+    if (gameMode == 'cvc') {
+        dom.cellElements.forEach(cell => cell.removeEventListener('click', playerMove));
+    }
 }
 
 // Player Choice
@@ -94,6 +122,7 @@ function playerSelector(event) {
     playerSelected = true;
     dom.playerMarkElement.textContent = event.target.value;     // X or O
     initialPlayerMark = dom.playerMarkElement.textContent;
+    dom.showPlayerElement.textContent = 'Player:  ' + initialPlayerMark;
     currentPlayerMark = dom.playerMarkElement.textContent;
 }
 
@@ -101,14 +130,18 @@ function launchGame() {
     if (!gameModeSelected || !playerSelected) {
         return;
     }
+    if (gameMode == 'cvc') {
+        computerMove();
+    }
     dom.mainMenuElement.style.display = 'none';
     dom.startButtonElement.className = 'hidden';
     dom.gameElement.style.display = 'flex';
+
     showNextBtn(false);
 }
 
 function cellEmpty(cell) {
-    return cell.textContent === '';
+    return cell.textContent == '' || cell.textContent == 'x' || cell.textContent == 'o';
 }
 
 function moveReject(cell) {
@@ -139,7 +172,10 @@ function playerMove(event) {
     }  
 }
 
-function computerMove() {
+function computerMove(responseTime = 500) {
+    if (gameMode == 'pvp') {
+        return;
+    }
     if (!gameIsRunning || roundWon || gameOver) {
         return;
     }
@@ -151,14 +187,24 @@ function computerMove() {
     // mark cell in array
     cells[randomCellIndex] = currentPlayerMark;
 
-    dom.cellElements.forEach(cell => cell.removeEventListener('click', playerMove));
+    if (gameMode == 'pvc') {
+        dom.cellElements.forEach(cell => cell.removeEventListener('click', playerMove));
+    }
 
+    if (gameMode == 'cvc') {
+        responseTime = 1000;
+    }
     setTimeout(() => {
         dom.cellElements.item(randomCellIndex).textContent = currentPlayerMark;             // pc marks cell in html
         winCheck();
         switchPlayerMark();
-        dom.cellElements.forEach(cell => cell.addEventListener('click', playerMove));
-    }, 500);
+        if (gameMode == 'pvc') {
+            dom.cellElements.forEach(cell => cell.addEventListener('click', playerMove));
+        }
+        if (gameMode == 'cvc') {
+            computerMove();
+        }
+    }, responseTime);
 }
 
 function winCheck() {
@@ -235,6 +281,14 @@ function switchPlayerMark() {
     dom.playerMarkElement.textContent = currentPlayerMark;
 }
 
+function stopGame() {
+    gameIsRunning = false;
+}
+
+function continueGame() {
+    gameIsRunning = true;
+}
+
 function nextRound() {
     if (gameOver || !roundWon) {
         return;
@@ -250,20 +304,20 @@ function nextRound() {
     roundWon = false;
 
     unMarkWinCells();
-    if (pcWon) {
+    if (pcWon || gameMode == 'cvc') {
         pcWon = false;
         computerMove();
     }
 }
 
-function restartGame() {
+function resetGame() {
+    stopGame();
     dom.cellElements.forEach(cell => cell.textContent = '');
     cells = ['', '', '', '', '', '', '', '', ''];
     dom.playerMarkElement.textContent = initialPlayerMark;
     currentPlayerMark = initialPlayerMark;
     dom.messageElement.textContent = "'s turn!"
 
-    gameIsRunning = true;
     roundWon = false;
     gameOver = false;
     dom.xScoreElement.textContent = xScore = 0;
@@ -273,14 +327,21 @@ function restartGame() {
 
     showNextBtn(false);
     unMarkWinCells();
+    continueGame();
+
+    if (gameMode == 'cvc') {
+        computerMove(1000);
+    }
 }
 
 function mainMenu() {
-    restartGame();
-    dom.roundElement.textContent = 'Round ' + round + '/5';
-    dom.mainMenuElement.style.display = 'flex';
-    dom.startButtonElement.className = '';
-    dom.gameElement.style.display = 'none';
+    stopGame();
+
+    // dom.mainMenuElement.style.display = 'flex';
+    // dom.startButtonElement.className = '';
+    // dom.gameElement.style.display = 'none';
+
+    window.location.reload();
 }
 
 function markWinCells(winCells, color='orange') {
