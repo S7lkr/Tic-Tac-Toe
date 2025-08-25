@@ -3,7 +3,8 @@
 
 
 ### Description:
-TicTacToe is small JS game where it takes one or two players to play. The goal of the game is to make a row, column or diagonal of the same symbols to win. This project's developement started on my JS Front-End studying program in SoftUni at the summer of 2024 as training and improving my knowledge, skills and practice with HTML, CSS, JS and DOM elements. it's now in pre-lapha version but its development continues on. I hope you like it :>
+TicTacToe is a small JS game where it takes one or two players to play. The goal of the game is to make a row, column or diagonal of the same symbols to win.
+This project's developement started on my **JS Front-End studying program** in SoftUni at the summer of 2024 as a training, honing and improving my knowledge, practice and control with HTML, CSS, JS and DOM elements. it's currently in pre-lapha v1.0.0 version but its development continues on. I hope you like it :>
 
 
 ### Download repo guide:
@@ -29,7 +30,6 @@ git clone https://github.com/S7lkr/Tic-Tac-Toe.git`
 
 
 ### How to Test/run in VSC (Visual Studio Code):
-=============================
 1> Go to Extensions tab in VSC, type 'Live Server' in searh bar and install it.
 
 2> Locate the folder you cloned/downloaded into, open it and on an empty space click right mouse button and select `Open with code` option. Or simply open VSC, if your workspace is empty you will see 2 blue buttons: `Open folder` and `Clone repository`. Click on 'Open Folder' and navigate to it.
@@ -52,4 +52,4 @@ For example to use port 8080:
     liveServer.settings.port: 8000,
 }
 ```
-Now app will be working on this particular port.
+Now this particular app will be working on this particular port. I recommend leaving it on 5500 (default).
