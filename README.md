@@ -1,16 +1,64 @@
 # Tic-Tac-Toe
+
+
+
+### Description:
+================
 A small JS game, called Tic Tac Toe. Its still in a Work in Progress (WIP) stage. Its developement started on my JS Front End studying program in SoftUni at the summer of 2024.
 
 
-How to Test/run on a local server?
-==================================
 
-1> Create a new folder on C: drive. Open CMD and navigate to its location: `cd C:\...\<folder path>`. Then type: `git clone https://github.com/S7lkr/Tic-Tac-Toe.git`
+### Download repo guide:
+========================
+There are a couple of ways to do it
 
-2> Have Node.js installed on your system. Check with: `node --version` or `node -v`
+- Create a new folder on C: drive. Open CMD and navigate to its location: `cd C:\...\<folder path>`. Then type:
+```
+git clone https://github.com/S7lkr/Tic-Tac-Toe.git`
+```
 
-3> You can run your file in http-server. Again in CMD, run the command `npm install http-server -g`
+- Or simply click `<> Code` button, `Download ZIP`. Make sure the folder you extract the files, is on C: drive.
 
-4> Execute command `http-server` to start a local server.
+- If you are using GitHub Desktop app, select `Open with GitHub Desktop`.
 
-5> Go to your browser and type in the address bar `localhost:8080`. Your Application should run now locally on port 8080.
+
+
+### How to Test/run in CMD (Command Prompt):
+===========================================
+
+1> Have Node.js installed on your system. Check with: `node --version` or `node -v`
+
+2> You can run your file in http-server. Run the command `npm install http-server -g`
+
+3> Execute command `http-server` to start a local server.
+
+4> Go to your browser and type in the address bar `localhost:8080`. Your Application should run now locally on port 8080.
+
+
+
+### How to Test/run in VSC (Visual Studio Code):
+=============================
+1> Go to Extensions tab in VSC, type 'Live Server' in searh bar and install it.
+
+2> Locate the folder you cloned/downloaded into, open it and on an empty space click right mouse button and select `Open with code` option. Or simply open VSC, if your workspace is empty you will see 2 blue buttons: `Open folder` and `Clone repository`. Click on 'Open Folder' and navigate to it.
+
+3> When in VSC right click on the .html file and select `Open with Live Server`. The game has launched automatically on 'http://localhost:5500'
+
+
+
+### NOTE:
+Live Server' localhost works on port **5500** by default. The most common and recommended method to work on a custom port is to use Workspace Settings. To do this, create a `.vscode` folder at the root of your project directory if it doesn't already exist, then create a file named settings.json inside it. Add the following JSON structure, replacing [YOUR_DESIRED_PORT] with your chosen port number:
+
+```
+{
+    liveServer.settings.port: ['YOUR_PORT']
+}
+```
+For example to use port 8080:
+
+```
+{
+    liveServer.settings.port: 8000,
+}
+```
+Now app will be working on this particular port.
