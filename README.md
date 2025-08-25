@@ -34,7 +34,7 @@ git clone https://github.com/S7lkr/Tic-Tac-Toe.git`
 
 2> Locate the folder you cloned/downloaded into, open it and on an empty space click right mouse button and select `Open with code` option. Or simply open VSC, if your workspace is empty you will see 2 blue buttons: `Open folder` and `Clone repository`. Click on 'Open Folder' and navigate to it.
 
-3> When in VSC right click on the .html file and select `Open with Live Server`. The game has launched automatically on _http://localhost:5500_
+3> When in VSC right click on the .html file and select `Open with Live Server`. The game has launched automatically on _localhost:5500_
 
 
 ### NOTE:
