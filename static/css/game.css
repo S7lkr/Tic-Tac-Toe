@@ -1,0 +1,78 @@
+/* --------Game--------- */
+.tic-tac-toe {
+    display: none;
+    /* display: flex; */
+    justify-content: center;
+    margin: 0 auto;
+    width: 70em;
+}
+
+#game-mode-section {
+    min-width: 190px;
+    height: 250px;
+    margin-top: 5em;
+    background-color: #996E89;
+    text-align: center;
+    box-shadow: 0.4em 0.4em 0.5em 0 rgb(0, 0, 0, 0.8);
+}
+
+#game-container {
+    text-align: center;
+    width: 25em;
+    margin: 0 auto;
+    margin-left: 170px;
+    height: auto;
+}
+
+.cell-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    width: 220px;
+    gap: 5px;
+    margin: 0 auto;
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
+#score-container {
+    max-width: 8em;
+    max-height: 8em;
+    background-color:#996E89;
+    /* border: 1px solid black; */
+    /* border-radius: 0.2em; */
+    padding: 1em;
+    margin-top: 5em;
+    box-shadow: 0.4em 0.4em 0.5em 0 rgb(0, 0, 0, 0.8);
+}
+
+div.round-status h3 {
+    font-size: 1.6em;
+    margin-top: 1em;
+}
+
+.cell {
+    width: 70px;
+    height: 70px;
+    font-size: 3em;
+    background-color: antiquewhite;
+    border: 2px solid black;
+    box-shadow: 0.4em 0.4em 0.5em 0 rgb(0, 0, 0, 0.8);
+    cursor: pointer;
+}
+
+.cell:hover {
+    border: 3px solid black;
+    background-color: whitesmoke;
+    /* width: 75px;
+    height: 75px; */
+    border-radius: 0.3em;
+}
+
+
+#message, #player {
+    font-size: 1.5em;
+}
+
+h2#score {
+    text-align: center;
+}
