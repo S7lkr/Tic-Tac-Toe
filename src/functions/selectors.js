@@ -11,7 +11,7 @@ export function gameModeSelector(event) {
     // pHiddenElement.textContent = event.target.id;
     const mode = event.target.value
     setState({
-        gameMode: mode,
+        gameMode: mode,         // 'pvp', 'pvc' or 'cvc'
         gameModeSelected: true,
     });
     
@@ -22,14 +22,12 @@ export function gameModeSelector(event) {
 
 // Player Choice
 export function playerSelector(event) {
-    // vaR.playerSelected = true;
+    const symbol = event.target.value;
     setState({
         playerSelected: true,
-        initialPlayerMark: event.target.value,
-        currentPlayerMark: event.target.value,
+        initialPlayerMark: symbol,
+        currentPlayerMark: symbol,
     });
-    playerMarkElement.textContent = event.target.value;     // X or O
-    // initialPlayerMark = playerMarkElement.textContent;
-    showPlayerElement.textContent = 'Player:  ' + initialPlayerMark;
-    // currentPlayerMark = playerMarkElement.textContent;
+    playerMarkElement.textContent = symbol;     // X or O
+    showPlayerElement.textContent = 'Player:  ' + symbol;
 }
