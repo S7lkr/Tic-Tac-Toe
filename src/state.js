@@ -45,9 +45,9 @@ export function getState() {
     return state;
 }
 
-// State setter -> called from outside but executes here by modifying state
+// State setter -> called from outside, executed here -> modifying state (values)
 export function setState(newState) {
-    state = { ...state, ...newState };  // overwrite old state's key:value pair
+    state = { ...state, ...newState };  // overwrite old state's key:value pair (change one/more values)
     listeners.forEach(lis => lis(state));
 }
 
