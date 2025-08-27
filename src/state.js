@@ -5,6 +5,7 @@ let state = {
         'pvp': 'Player vs Player',
         'cvc': 'Computer vs Computer',
     },
+    
     initialPlayerMark: '',
     currentPlayerMark: '',
     gameMode: '',
@@ -22,6 +23,7 @@ let state = {
         [0, 4, 8],      // Left-Right diag.
         [2, 4, 6],      // Right-Left diag.
     ],
+
     round: 1,
     xScore: 0,
     oScore: 0,
@@ -45,10 +47,10 @@ export function getState() {
 
 // State setter -> called from outside, executed here -> modifying state (values)
 export function setState(newState) {
-    state = { ...state, ...newState };  // overwrite old state's key:value pair (change one/more values)
-    listeners.forEach(lis => lis(state));
+    state = { ...state, ...newState };      // overwrite old state's key:value pair (change one or more values)
+    listeners.forEach(lis => lis(state));   // notify subscribers
 }
 
-export function notify(listener) {
+export function subscribe(listener) {
     listeners.push(listener);
 }
