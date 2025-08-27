@@ -1,36 +1,36 @@
 // DOM
 import * as dom from './dom.js';
 
+// State
+import { getState, setState } from './state.js';
+
 // functions
-import { showHideRules } from '../src/functions/controllers.js';
-import { gameModeSelector, playerSelector } from '../src/functions/selectors.js';
+import { gameModeSelector, playerSelector } from './functions/selectors.js';
+import { runGame, showHideRules } from './functions/controllers.js';
 import { playerMove } from './functions/moves.js';
 import { cellHover, cellUnHover } from './functions/effects.js';
-import { nextRound, stopGame, resetGame, mainMenu } from '../src/functions/controllers.js';
+import { nextRound, stopGame, resetGame, mainMenu, launchGame, runGame } from './functions/controllers.js';
 
 
 main();
-
-// ---------------------------- Functions -------------------------------
 
 // Event listeners
 function main() {
     // Set initial game configuration
     dom.roundElement.textContent = `Round ${round}/5`;
-    dom.xScoreElement.textContent = xScore;
-    dom.oScoreElement.textContent = oScore;
+    dom.xScoreElement.textContent = getState().xScore;
+    dom.oScoreElement.textContent = getState().oScore;
 
     // Initial (main menu) listeners
     dom.rulesButtonElement.addEventListener('click', showHideRules);
     dom.gameModeElements.forEach(el => el.addEventListener('change', gameModeSelector));
     dom.playerChoicesElement.forEach(el => el.addEventListener('change', playerSelector));
-
         
-    // Start game listener
+    // Start Button listener
     dom.startButtonElement.addEventListener('click', launchGame);
-    gameIsRunning = true;
+    runGame();
 
-    // Cell listeners
+    // Cell listeners/effects
     dom.cellElements.forEach(cellEl => cellEl.addEventListener('click', playerMove));
     dom.cellElements.forEach(cellEl => cellEl.addEventListener('mouseover', cellHover));
     dom.cellElements.forEach(cellEl => cellEl.addEventListener('mouseout', cellUnHover));
