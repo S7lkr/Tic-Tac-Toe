@@ -10,7 +10,9 @@ export function switchPlayerMark() {
     if (gameRunWinOverCheck()) {
         return;
     }
-    setState({currentPlayerMark: currentPlayerMark === 'X' ? 'O' : 'X'});
+    setState({
+        currentPlayerMark: getState().currentPlayerMark === 'X' ? 'O' : 'X',
+    });
     playerMarkElement.textContent = getState().currentPlayerMark;
 }
 
@@ -23,8 +25,8 @@ export function playerMove(event) {
         moveReject(cell);
         return;
     }
-    cell.textContent = getState().currentPlayerMark;      // fill cell's textContent with 'X' or 'O'
-    getState().cells[cell.id] = getState().currentPlayerMark;      // fill Array cells with 'X' or 'O'
+    cell.textContent = getState().cells[cell.id] = getState().currentPlayerMark;      // fill DOM Cell with 'X' or 'O'
+    getState().cells[cell.id] = getState().currentPlayerMark;               // fill Array cells with 'X' or 'O'
 
     winCheck();
     switchPlayerMark();
