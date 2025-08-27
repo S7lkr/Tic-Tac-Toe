@@ -1,19 +1,21 @@
 import { cellElements, playerMarkElement } from "../dom";
-import { cells, roundWon, gameMode, gameOver, gameIsRunning, currentPlayerMark } from "../main.js";
+import { setState, getState } from "../state.js";
 
 import { cellEmpty, winCheck } from "./checkers.js";
 import { moveReject } from "./effects.js";
+import { gameRunWinOverCheck } from "./checkers.js";
+
 
 export function switchPlayerMark() {
-    if (roundWon || gameOver || !gameIsRunning) {
+    if (gameRunWinOverCheck()) {
         return;
     }
-    currentPlayerMark = currentPlayerMark === 'X' ? 'O' : 'X';
-    playerMarkElement.textContent = currentPlayerMark;
+    setState({currentPlayerMark: currentPlayerMark === 'X' ? 'O' : 'X'});
+    playerMarkElement.textContent = getState().currentPlayerMark;
 }
 
 export function playerMove(event) {
-    if (!gameIsRunning || roundWon || gameOver) {
+    if (gameRunWinOverCheck()) {
         return;
     }
     const cell = event.target;          // the CELL which is 'clicked'
@@ -21,47 +23,47 @@ export function playerMove(event) {
         moveReject(cell);
         return;
     }
-    cell.textContent = currentPlayerMark;      // fill cell's textContent with 'X' or 'O'
-    cells[cell.id] = currentPlayerMark;      // fill Array cells with 'X' or 'O'
+    cell.textContent = getState().currentPlayerMark;      // fill cell's textContent with 'X' or 'O'
+    getState().cells[cell.id] = getState().currentPlayerMark;      // fill Array cells with 'X' or 'O'
 
     winCheck();
     switchPlayerMark();
 
-    if (gameMode === 'pvc') {
+    if (getState().gameMode === 'pvc') {
         computerMove();
     }  
 }
 
 export function computerMove(responseTime = 500) {
-    if (gameMode == 'pvp') {
+    const currPlMark = getState().currentPlayerMark;
+    const gameM = getState().gameMode;
+    if (gameM == 'pvp') {
         return;
     }
-    if (!gameIsRunning || roundWon || gameOver) {
+    if (gameRunWinOverCheck()) {
         return;
     }
     let emptyCellIndexes = [];
-    Array.from(dom.cellElements).forEach(cell => cell.textContent == '' ? emptyCellIndexes.push(Number(cell.id)) : null);
+    Array.from(cellElements).forEach(cell => cell.textContent == '' ? emptyCellIndexes.push(Number(cell.id)) : null);
 
     // take one RANDOM index of emptyCellIndexes (free cell to mark)
     let randomCellIndex = emptyCellIndexes[Math.floor(Math.random() * emptyCellIndexes.length)];
     // mark cell in array
-    cells[randomCellIndex] = currentPlayerMark;
+    getState().cells[randomCellIndex] = currPlMark;
 
-    if (gameMode == 'pvc') {
+    if (gameM == 'pvc') {
         cellElements.forEach(cell => cell.removeEventListener('click', playerMove));
-    }
-
-    if (gameMode == 'cvc') {
+    } else if (gameM == 'cvc') {
         responseTime = 1000;
     }
     setTimeout(() => {
-        dom.cellElements.item(randomCellIndex).textContent = currentPlayerMark;             // pc marks cell in html
-        func.winCheck();
-        func.switchPlayerMark();
-        if (gameMode == 'pvc') {
-            dom.cellElements.forEach(cell => cell.addEventListener('click', playerMove));
+        cellElements.item(randomCellIndex).textContent = currPlMark;             // pc marks cell in html
+        winCheck();
+        switchPlayerMark();
+        if (gameM == 'pvc') {
+            cellElements.forEach(cell => cell.addEventListener('click', playerMove));
         }
-        if (gameMode == 'cvc') {
+        if (gameM == 'cvc') {
             computerMove();
         }
     }, responseTime);
