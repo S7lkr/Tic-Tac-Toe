@@ -1,46 +1,6 @@
 import * as dom from './dom.js';
 
 
-// ----------------- Global values -----------------
-
-// Game mode & Player
-const modes = {
-    'pvc': 'Player vs Computer',
-    'pvp': 'Player vs Player',
-    'cvc': 'Computer vs Computer',
-}
-let initialPlayerMark = '';
-let currentPlayerMark = '';
-let gameMode = '';
-
-// Winner cell indexes:
-let cells = ['', '', '', '', '', '', '', '', ''];
-let winnerCells = [];    // array -> any from winCombos
-
-const winCombos = [
-    [0, 1, 2],      // row 1
-    [3, 4, 5],      // row 2
-    [6, 7, 8],      // row 3
-    [0, 3, 6],      // col 1
-    [1, 4, 7],      // col 2
-    [2, 5, 8],      // col 3
-    [0, 4, 8],      // Left-Right diag.
-    [2, 4, 6],      // Right-Left diag.
-];
-
-let round = 1;
-let xScore = 0;
-let oScore = 0;
-
-let gameModeSelected = false;
-let playerSelected = false;
-
-let gameIsRunning = false;
-let roundWon = false;
-let gameOver = false;
-
-let pcWon = false;
-
 main();
 
 // ---------------------------- Functions -------------------------------
