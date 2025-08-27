@@ -1,6 +1,4 @@
-// ----------------- Global values -----------------
-
-
+// 'State' -> all variables
 let state = {
     modes: {
         'pvc': 'Player vs Computer',
