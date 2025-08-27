@@ -1,4 +1,8 @@
-import { setState } from "../state";
+import * as dom from '../dom.js';
+import { setState, getState } from "../state";
+
+import { computerMove } from './moves.js';
+import { unMarkWinCells } from './markers.js';
 
 
 export function showHideRules () {
@@ -12,14 +16,16 @@ export function showHideRules () {
 }
 
 export function showNextBtn(status=true) {
-    status ? dom.nextRoundButtonElement.classList.remove('hidden') : dom.nextRoundButtonElement.classList.add('hidden');
+    status
+    ? dom.nextRoundButtonElement.classList.remove('hidden')     // show
+    : dom.nextRoundButtonElement.classList.add('hidden');       // hide
 }
 
 export function launchGame() {
-    if (!gameModeSelected || !playerSelected) {
+    if (!getState().gameModeSelected || !getState().playerSelected) {
         return;
     }
-    if (gameMode == 'cvc') {
+    if (getState().gameMode == 'cvc') {
         computerMove();
     }
     dom.mainMenuElement.style.display = 'none';
@@ -30,35 +36,40 @@ export function launchGame() {
 }
 
 export function stopGame() {
-    gameIsRunning = false;
+    setState({
+        gameIsRunning: false,
+    });
 }
 
 export function resetGame() {
     stopGame();
     dom.cellElements.forEach(cell => cell.textContent = '');
-    cells = ['', '', '', '', '', '', '', '', ''];
-    dom.playerMarkElement.textContent = initialPlayerMark;
-    currentPlayerMark = initialPlayerMark;
+    setState({
+        cells: ['', '', '', '', '', '', '', '', ''],
+        currentPlayerMark: getState().initialPlayerMark,
+        round: 1,
+        roundWon: false,
+        gameOver: false,
+    });
+    dom.playerMarkElement.textContent = getState().initialPlayerMark;
     dom.messageElement.textContent = "'s turn!"
-
-    roundWon = false;
-    gameOver = false;
     dom.xScoreElement.textContent = xScore = 0;
     dom.oScoreElement.textContent = oScore = 0;
-    round = 1;
     dom.roundElement.textContent = `Round ${round}/5`;
 
     showNextBtn(false);
     unMarkWinCells();
     continueGame();
 
-    if (gameMode == 'cvc') {
+    if (getState().gameMode == 'cvc') {
         computerMove(1000);
     }
 }
 
 export function continueGame() {
-    gameIsRunning = true;
+    setState({
+        gameIsRunning: true,
+    });
 }
 
 export function mainMenu() {
@@ -72,22 +83,26 @@ export function mainMenu() {
 }
 
 export function nextRound() {
-    if (gameOver || !roundWon) {
+    if (getState().gameOver || !getState().roundWon) {
         return;
     }
-    cells = ['', '', '', '', '', '', '', '', ''];
+    setState({
+        cells: ['', '', '', '', '', '', '', '', ''],
+        round: ++1,
+        roundWon: false,
+    });
     dom.cellElements.forEach(cell => cell.textContent = '');
-    round += 1;
     dom.roundElement.textContent = `Round ${round}/5`;
     showNextBtn(false);
 
-    dom.playerMarkElement.textContent = currentPlayerMark;
+    dom.playerMarkElement.textContent = getState().currentPlayerMark;
     dom.messageElement.textContent = "'s turn!"
-    roundWon = false;
 
     unMarkWinCells();
-    if (pcWon || gameMode == 'cvc') {
-        pcWon = false;
+    if (getState().pcWon || getState().gameMode == 'cvc') {
+        setState({
+            pcWon: false,
+        });
         computerMove();
     }
 }
