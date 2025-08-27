@@ -21,6 +21,12 @@ export function showNextBtn(status=true) {
     : dom.nextRoundButtonElement.classList.add('hidden');       // hide
 }
 
+export function runGame() {
+    setState({
+        gameIsRunning: true,
+    });
+}
+
 export function launchGame() {
     if (!getState().gameModeSelected || !getState().playerSelected) {
         return;
