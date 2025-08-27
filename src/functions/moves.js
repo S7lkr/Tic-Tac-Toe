@@ -7,16 +7,18 @@ import { gameRunWinOverCheck } from "./checkers.js";
 
 
 export function switchPlayerMark() {
+    const currPlMark = getState().currentPlayerMark;
     if (gameRunWinOverCheck()) {
         return;
     }
     setState({
-        currentPlayerMark: getState().currentPlayerMark === 'X' ? 'O' : 'X',
+        currentPlayerMark: currPlMark === 'X' ? 'O' : 'X',
     });
-    playerMarkElement.textContent = getState().currentPlayerMark;
+    playerMarkElement.textContent = currPlMark;
 }
 
 export function playerMove(event) {
+    const currPlMark = getState().currentPlayerMark;
     if (gameRunWinOverCheck()) {
         return;
     }
@@ -25,8 +27,8 @@ export function playerMove(event) {
         moveReject(cell);
         return;
     }
-    cell.textContent = getState().cells[cell.id] = getState().currentPlayerMark;      // fill DOM Cell with 'X' or 'O'
-    getState().cells[cell.id] = getState().currentPlayerMark;               // fill Array cells with 'X' or 'O'
+    cell.textContent = getState().cells[cell.id] = currPlMark;      // fill DOM Cell with 'X' or 'O'
+    getState().cells[cell.id] = currPlMark;               // fill Array cells with 'X' or 'O'
 
     winCheck();
     switchPlayerMark();
