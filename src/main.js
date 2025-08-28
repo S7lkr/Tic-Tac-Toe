@@ -2,14 +2,13 @@
 import * as dom from './dom.js';
 
 // State
-import { getState, setState } from './state.js';
+import { getState } from './state.js';
 
 // functions
 import { gameModeSelector, playerSelector } from './functions/selectors.js';
-import { runGame, showHideRules } from './functions/controllers.js';
 import { playerMove } from './functions/moves.js';
 import { cellHover, cellUnHover } from './functions/effects.js';
-import { nextRound, stopGame, resetGame, mainMenu, launchGame, runGame } from './functions/controllers.js';
+import { showHideRules, nextRound, stopGame, resetGame, mainMenu, launchGame, runGame } from './functions/controllers.js';
 
 
 main();
@@ -17,7 +16,7 @@ main();
 // Event listeners
 function main() {
     // Set initial game configuration
-    dom.roundElement.textContent = `Round ${round}/5`;
+    dom.roundElement.textContent = `Round ${getState().round}/5`;
     dom.xScoreElement.textContent = getState().xScore;
     dom.oScoreElement.textContent = getState().oScore;
 
