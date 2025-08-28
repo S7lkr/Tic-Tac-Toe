@@ -7,18 +7,17 @@ import { gameRunWinOverCheck } from "./checkers.js";
 
 
 const switchPlayerMark = () => {
-    const currPlMark = getState().currentPlayerMark;
     if (gameRunWinOverCheck()) {
         return;
     }
     setState({
-        currentPlayerMark: currPlMark == 'X' ? 'O' : 'X',
+        currentPlayerMark: getState().currentPlayerMark == 'X' ? 'O' : 'X',
     });    
     playerMarkElement.textContent = getState().currentPlayerMark;
 }
 
 export function playerMove(event) {
-    const currPlMark = getState().currentPlayerMark;
+    const { cells, currentPlayerMark, gameMode } = getState();
     if (gameRunWinOverCheck()) {
         return;
     }
@@ -27,21 +26,20 @@ export function playerMove(event) {
         moveReject(cell);
         return;
     }
-    cell.textContent = getState().cells[cell.id] = currPlMark;      // fill DOM Cell with 'X' or 'O'
-    getState().cells[cell.id] = currPlMark;               // fill Array cells with 'X' or 'O'
+    cell.textContent = cells[cell.id] = currentPlayerMark;      // fill DOM Cell with 'X' or 'O'
+    cells[cell.id] = currentPlayerMark;               // fill Array cells with 'X' or 'O'
 
     winCheck();
     switchPlayerMark();
 
-    if (getState().gameMode === 'pvc') {
+    if (gameMode === 'pvc') {
         computerMove();
     }  
 }
 
 export function computerMove(responseTime = 500) {
-    const currPlMark = getState().currentPlayerMark;
-    const gameM = getState().gameMode;
-    if (gameM == 'pvp') {
+    const { currentPlayerMark, gameMode, cells } = getState();
+    if (gameMode == 'pvp') {
         return;
     }
     if (gameRunWinOverCheck()) {
@@ -53,21 +51,21 @@ export function computerMove(responseTime = 500) {
     // take one RANDOM index of emptyCellIndexes (free cell to mark)
     let randomCellIndex = emptyCellIndexes[Math.floor(Math.random() * emptyCellIndexes.length)];
     // mark cell in array
-    getState().cells[randomCellIndex] = currPlMark;
+    cells[randomCellIndex] = currentPlayerMark;
 
-    if (gameM == 'pvc') {
+    if (gameMode == 'pvc') {
         cellElements.forEach(cell => cell.removeEventListener('click', playerMove));
-    } else if (gameM == 'cvc') {
+    } else if (gameMode == 'cvc') {
         responseTime = 1000;
     }
     setTimeout(() => {
-        cellElements.item(randomCellIndex).textContent = currPlMark;             // pc marks cell in html
+        cellElements.item(randomCellIndex).textContent = currentPlayerMark;             // pc marks cell in html
         winCheck();
         switchPlayerMark();
-        if (gameM == 'pvc') {
+        if (gameMode == 'pvc') {
             cellElements.forEach(cell => cell.addEventListener('click', playerMove));
         }
-        if (gameM == 'cvc') {
+        if (gameMode == 'cvc') {
             computerMove();
         }
     }, responseTime);
