@@ -6,24 +6,20 @@ import { showNextBtn } from './controllers.js';
 
 
 export function gameRunWinOverCheck() {
-    const [run, won, over] = [getState().gameIsRunning, getState().roundWon, getState().gameOver]
-    return !run || won || over;
+    const { gameIsRunning, roundWon, gameOver } = getState();
+    return !gameIsRunning || roundWon || gameOver;
 }
 
 export function cellEmpty(cell) {
     return cell.textContent == '' || cell.textContent == 'x' || cell.textContent == 'o';
 }
 
-export function winCheck() {
-    const playedCells = getState().cells.filter(el => el !== '').length;
-    if (playedCells < 3) {     // at least 3 letters are needed in order 'winCheck' to be initiated
-        return;
-    }
-    for (let i = 0; i < getState().winCombos.length; i++) {
-        let combination = getState().winCombos[i];    // [0, 1, 2] or [3, 4, 5] or etc.
+const comboMatch = (cells, winCombos) => {
+    for (let i = 0; i < winCombos.length; i++) {
+        let combination = winCombos[i];    // [0, 1, 2] or [3, 4, 5] or etc.
         let combo = [];
 
-        combination.forEach(ind => combo.push(getState().cells[ind]));
+        combination.forEach(ind => combo.push(cells[ind]));
         const xCombo = '["X","X","X"]';
         const oCombo = '["O","O","O"]';
 
@@ -36,29 +32,61 @@ export function winCheck() {
             break;
         }
     }
-    // Round Won
+}
+
+const noCombos = (playedCells) => playedCells < 3;
+//     return playedCells < 3    // at least 3 marks are needed for 'winCheck' to be initiated
+// }
+
+export function winCheck() {
+    // get State vars, but not ALL -> SOME will be changed dynamically in state
+    const {
+        cells,
+        winCombos,
+        initialPlayerMark,
+        currentPlayerMark,
+        xScore,
+        oScore,
+        round,
+    } = getState();
+    const playedCells = cells.filter(el => el !== '').length;
+
+    if (noCombos(playedCells, cells, winCombos)) return;
+    comboMatch(cells, winCombos);       // someone has won
+
+    // Round Won (by whom?)
     if (getState().roundWon) {
 
         // Check if Player/Computer won the round
         setState({
-            pcWon: getState().initialPlayerMark != getState().currentPlayerMark
+            pcWon: initialPlayerMark != currentPlayerMark
                 ? true
                 : false,
         });
-        switch (getState().currentPlayerMark) {     // winner is the current player
+        switch (currentPlayerMark) {     // winner is the current player
             case 'X': setState({
-                    xScore: getState().xScore + 1,
-                });
-                dom.xScoreElement.textContent = getState().xScore;
+                xScore: xScore + 1,     // if X won +1
+            });
+                dom.xScoreElement.textContent = xScore + 1;
                 break;
             case 'O': setState({
-                    oScore: getState().oScore + 1,
-                });
-                dom.oScoreElement.textContent = getState().oScore;
+                oScore: oScore + 1,     // if O won +1
+            });
+                dom.oScoreElement.textContent = oScore + 1;
                 break;
         }
+        // Game over with Draw (final round + empty cells)
+        if (round == 5 && getState().xScore == 2 && getState().oScore === 2) {
+            setState({
+                gameOver: true,
+                gameIsRunning: false,
+            });
+            dom.playerMarkElement.textContent = '';
+            dom.messageElement.textContent = 'Game Over! Draw!';
+            return;
+        }
         // Game over with WIN
-        if (getState().xScore === 3 || getState().oScore === 3) {
+        if (getState().xScore === 3 || getState().oScore === 3) {   // we get xScore/oScore dynamically
             dom.messageElement.textContent = " is the Winner!!";
             setState({
                 gameOver: true,
@@ -71,16 +99,17 @@ export function winCheck() {
         }
         return;
     }
-    // Game over with DRAW
-    if (playedCells === 9) {               // if round ended,
-        if (getState().round === 5) {                 // and is the last
+    // Game over with Draw (final round + no cells)
+    const [xS, oS] = [getState().xScore, getState().oScore];
+    if (playedCells === 9) {               // if no cells to play,
+        if (round === 5) {                 // and last round
             dom.messageElement.textContent = " is the Winner!";
-            if (getState().xScore > getState().oScore) {
+            if (xS > oS) {
                 dom.playerMarkElement.textContent = 'X';
                 setState({
                     gameOver: true,
                 });
-            } else if (getState().oScore > getState().xScore) {
+            } else if (oS > xS) {
                 dom.playerMarkElement.textContent = 'O';
                 setState({
                     gameOver: true,
