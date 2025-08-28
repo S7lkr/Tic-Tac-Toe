@@ -1,7 +1,6 @@
-import { cellElements } from "../dom";
+import { cellElements } from "../dom.js";
 
-// private function
-function painter(cell, color) {
+const painter = (cell, color) => {
     cellElements.item(cell).style.backgroundColor = color;
 }
 

@@ -1,5 +1,5 @@
 import * as dom from '../dom.js';
-import { setState, getState } from "../state";
+import { setState, getState } from "../state.js";
 
 import { computerMove } from './moves.js';
 import { unMarkWinCells } from './markers.js';
@@ -59,9 +59,13 @@ export function resetGame() {
     });
     dom.playerMarkElement.textContent = getState().initialPlayerMark;
     dom.messageElement.textContent = "'s turn!"
-    dom.xScoreElement.textContent = xScore = 0;
-    dom.oScoreElement.textContent = oScore = 0;
-    dom.roundElement.textContent = `Round ${round}/5`;
+    dom.xScoreElement.textContent = '0';
+    dom.oScoreElement.textContent = '0';
+    setState({
+        xScore: 0,
+        oScore: 0,
+    });
+    dom.roundElement.textContent = `Round ${getState().round}/5`;
 
     showNextBtn(false);
     unMarkWinCells();
@@ -94,11 +98,11 @@ export function nextRound() {
     }
     setState({
         cells: ['', '', '', '', '', '', '', '', ''],
-        round: ++1,
+        round: getState().round + 1,
         roundWon: false,
     });
     dom.cellElements.forEach(cell => cell.textContent = '');
-    dom.roundElement.textContent = `Round ${round}/5`;
+    dom.roundElement.textContent = `Round ${getState().round}/5`;
     showNextBtn(false);
 
     dom.playerMarkElement.textContent = getState().currentPlayerMark;

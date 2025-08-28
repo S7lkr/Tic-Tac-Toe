@@ -1,4 +1,6 @@
-import { getState, setState } from "../state";
+import * as dom from '../dom.js';
+
+import { getState, setState } from "../state.js";
 import { markWinCells } from './markers.js';
 import { showNextBtn } from './controllers.js';
 
@@ -13,14 +15,12 @@ export function cellEmpty(cell) {
 }
 
 export function winCheck() {
-    const [oS, xS] = [getState().oScore, getState().xScore];
     const playedCells = getState().cells.filter(el => el !== '').length;
-    
     if (playedCells < 3) {     // at least 3 letters are needed in order 'winCheck' to be initiated
         return;
     }
-    for (let i = 0; i < winCombos.length; i++) {
-        let combination = winCombos[i];    // [0, 1, 2] or [3, 4, 5] or etc.
+    for (let i = 0; i < getState().winCombos.length; i++) {
+        let combination = getState().winCombos[i];    // [0, 1, 2] or [3, 4, 5] or etc.
         let combo = [];
 
         combination.forEach(ind => combo.push(getState().cells[ind]));
@@ -38,24 +38,27 @@ export function winCheck() {
     }
     // Round Won
     if (getState().roundWon) {
-        // Check if Player or Computer won the round
+
+        // Check if Player/Computer won the round
         setState({
-            pcWon: getState().initialPlayerMark != getState().currentPlayerMark ? true : false,
+            pcWon: getState().initialPlayerMark != getState().currentPlayerMark
+                ? true
+                : false,
         });
         switch (getState().currentPlayerMark) {     // winner is the current player
             case 'X': setState({
-                    xScore: ++1,
-                })
-                dom.xScoreElement.textContent = xS;
+                    xScore: getState().xScore + 1,
+                });
+                dom.xScoreElement.textContent = getState().xScore;
                 break;
             case 'O': setState({
-                    oScore: ++1,
-                })
-                dom.oScoreElement.textContent = oS;
+                    oScore: getState().oScore + 1,
+                });
+                dom.oScoreElement.textContent = getState().oScore;
                 break;
         }
         // Game over with WIN
-        if (xS === 3 || oS === 3) {
+        if (getState().xScore === 3 || getState().oScore === 3) {
             dom.messageElement.textContent = " is the Winner!!";
             setState({
                 gameOver: true,
@@ -72,12 +75,12 @@ export function winCheck() {
     if (playedCells === 9) {               // if round ended,
         if (getState().round === 5) {                 // and is the last
             dom.messageElement.textContent = " is the Winner!";
-            if (xS > oS) {
+            if (getState().xScore > getState().oScore) {
                 dom.playerMarkElement.textContent = 'X';
                 setState({
                     gameOver: true,
                 });
-            } else if (oS > xS) {
+            } else if (getState().oScore > getState().xScore) {
                 dom.playerMarkElement.textContent = 'O';
                 setState({
                     gameOver: true,

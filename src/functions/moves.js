@@ -1,4 +1,4 @@
-import { cellElements, playerMarkElement } from "../dom";
+import { cellElements, playerMarkElement } from "../dom.js";
 import { setState, getState } from "../state.js";
 
 import { cellEmpty, winCheck } from "./checkers.js";
@@ -6,15 +6,15 @@ import { moveReject } from "./effects.js";
 import { gameRunWinOverCheck } from "./checkers.js";
 
 
-export function switchPlayerMark() {
+const switchPlayerMark = () => {
     const currPlMark = getState().currentPlayerMark;
     if (gameRunWinOverCheck()) {
         return;
     }
     setState({
-        currentPlayerMark: currPlMark === 'X' ? 'O' : 'X',
-    });
-    playerMarkElement.textContent = currPlMark;
+        currentPlayerMark: currPlMark == 'X' ? 'O' : 'X',
+    });    
+    playerMarkElement.textContent = getState().currentPlayerMark;
 }
 
 export function playerMove(event) {
