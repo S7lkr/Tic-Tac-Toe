@@ -13,6 +13,12 @@ const lessThan3moves = (playedCells) => playedCells < 3;
 
 const clearPlayerMark = () => dom.playerMarkElement.textContent = '';
 
+// printer
+export const report = (message, plMark='') => {
+    dom.messageElement.textContent = message;
+    dom.playerMarkElement.textContent = plMark;
+}
+
 const winDrawCheck = (cells, playedCells, winCombos) => {
     // 0 - 7
     for (let i = 0; i < winCombos.length; i++) {
@@ -34,24 +40,6 @@ const winDrawCheck = (cells, playedCells, winCombos) => {
     }
 }
 
-// printer
-export const report = (message, plMark='') => {
-    dom.messageElement.textContent = message;
-    dom.playerMarkElement.textContent = plMark;
-}
-
-const roundDraw = (round, xS, oS) => {  
-    if (round === 5 && xS === oS) {
-        setState({ gameIsRunning: false });
-        report('Game Over! Draw!');
-    } else {
-        report('Round Draw!');
-    }
-    clearPlayerMark();
-
-    return true;
-}
-
 const scoreChanger = (currPlMark, xS, oS) => {
     switch (currPlMark) {     // winner is current player
     case 'X': setState({ xScore: xS + 1 });
@@ -63,6 +51,27 @@ const scoreChanger = (currPlMark, xS, oS) => {
     }
 }
 
+const roundDraw = (round, xS, oS, playedCells) => {  
+    if (round === 5 && playedCells === 9) {
+        if (xS === oS) {
+            setState({ gameIsRunning: false });
+            report('Game Over! Draw!');
+        } else if (xS > oS) {
+            report(' is the Winner', 'X');
+        } else {
+            report(' is the Winner!', 'O');
+        }
+        setState({ gameIsRunning: false });
+        return;
+    } else {
+        report('Round Draw!');
+        showNextBtn();
+    }
+    clearPlayerMark();
+
+    return true;
+}
+
 const roundWon = (currentPlayerMark, xS, oS, round) => {
     scoreChanger(currentPlayerMark, xS, oS);
     // final round -> X or O wins
@@ -71,8 +80,10 @@ const roundWon = (currentPlayerMark, xS, oS, round) => {
         // Game draw + empty cells
         if (x > o) {
             report(' is the Winner!!', 'X');
-        } else {
+        } else if (x < o) {
             report(' is the Winner', 'O');
+        } else {    // xScore = oScore
+            report('Game over! Draw!');
         }
         setState({ gameIsRunning: false });
         return;
@@ -105,13 +116,11 @@ export function winCheck() {
 
     if (getState().roundIsDraw) {
         // Draw
-        if (roundDraw(round, xS, oS)) {
-            if (!getState().gameIsRunning) return;
-            showNextBtn();
+        if (roundDraw(round, xS, oS, playedCells)) {
             return;
         }
     }
-    if (getState().roundIsWon) {        
+    if (getState().roundIsWon) {     
         // player or pc won the round
         setState({ pcWon: initialPlayerMark != currentPlayerMark ? true : false });
         // Win
