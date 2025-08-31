@@ -64,7 +64,9 @@ const roundDraw = (round, xS, oS, playedCells) => {
         setState({ gameIsRunning: false });
         return;
     } else {
+        setState({ roundIsDraw: true });
         report('Round Draw!');
+        clearPlayerMark();
         showNextBtn();
     }
     clearPlayerMark();

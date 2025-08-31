@@ -25,8 +25,9 @@ export function playerMove(event) {
         cells, gameMode,
         currentPlayerMark,
     } = getState();
-
-    if (gameOverRoundWin()) {
+    
+    const playedCells = cells.filter(el => el !== '').length;
+    if (gameOverRoundWin() || playedCells === 9) {
         return;
     }
     const cell = event.target;
@@ -42,9 +43,7 @@ export function playerMove(event) {
     const { roundIsWon, roundIsDraw } = getState();
     if (!roundIsDraw && !roundIsWon) {
         switchPlayerMark();
-    }
-    console.log(getState().currentPlayerMark);
-    
+    }    
     if (gameMode === 'pvc') {
         computerMove();
     }  
@@ -74,11 +73,13 @@ export function computerMove(responseTime = 500) {
     setTimeout(() => {
         cellElements.item(randomCellIndex).textContent = currentPlayerMark;             // pc marks cell in html
         winCheck();
-        switchPlayerMark();
+        const { pcWon, gameMode, roundIsWon } = getState();
+        if (!pcWon && !roundIsWon) switchPlayerMark();
         if (gameMode == 'pvc') {
             cellElements.forEach(cell => cell.addEventListener('click', playerMove));
         }
-        if (gameMode === 'cvc') {
+        const playedCells = cells.filter(el => el !== '').length;
+        if (gameMode === 'cvc' && playedCells < 9) {
             computerMove();
         }
     }, responseTime);

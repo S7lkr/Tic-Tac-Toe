@@ -53,6 +53,7 @@ export function resetGame() {
         gameIsRunning: true,
         roundIsDraw: false,
         roundIsWon: false,
+        pcWon: false,
     });
     report("'s turn!", initialPlayerMark);
     dom.cellElements.forEach(cell => cell.textContent = '');
@@ -86,6 +87,7 @@ export function nextRound() {
         round: round + 1,
         roundIsWon: false,
         roundIsDraw: false,
+        pcWon: false,
     });
     dom.cellElements.forEach(cell => cell.textContent = '');
     dom.roundElement.textContent = `Round ${round + 1}/5`;
