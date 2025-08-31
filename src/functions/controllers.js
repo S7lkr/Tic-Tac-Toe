@@ -1,8 +1,8 @@
 import * as dom from '../dom.js';
 import { setState, getState } from "../state.js";
-
 import { computerMove } from './moves.js';
 import { unMarkWinCells } from './markers.js';
+import { report } from './winCheckers.js';
 
 
 export function showHideRules () {
@@ -19,12 +19,6 @@ export function showNextBtn(status=true) {
     status
     ? dom.nextRoundButtonElement.classList.remove('hidden')     // show
     : dom.nextRoundButtonElement.classList.add('hidden');       // hide
-}
-
-export function runGame() {
-    setState({
-        gameIsRunning: true,
-    });
 }
 
 export function launchGame() {
@@ -48,38 +42,29 @@ export function stopGame() {
 }
 
 export function resetGame() {
+    const { initialPlayerMark } = getState();
     stopGame();
-    dom.cellElements.forEach(cell => cell.textContent = '');
     setState({
-        cells: ['', '', '', '', '', '', '', '', ''],
-        currentPlayerMark: getState().initialPlayerMark,
+        currentPlayerMark: initialPlayerMark,
+        cells: Array(9).fill(''),
         round: 1,
-        roundWon: false,
-        gameOver: false,
+        oScore: 0,
+        xScore: 0,
+        gameIsRunning: true,
+        roundIsDraw: false,
+        roundIsWon: false,
     });
-    dom.playerMarkElement.textContent = getState().initialPlayerMark;
-    dom.messageElement.textContent = "'s turn!"
+    report("'s turn!", initialPlayerMark);
+    dom.cellElements.forEach(cell => cell.textContent = '');
+    dom.roundElement.textContent = `Round ${getState().round}/5`;
     dom.xScoreElement.textContent = '0';
     dom.oScoreElement.textContent = '0';
-    setState({
-        xScore: 0,
-        oScore: 0,
-    });
-    dom.roundElement.textContent = `Round ${getState().round}/5`;
-
     showNextBtn(false);
     unMarkWinCells();
-    continueGame();
 
     if (getState().gameMode == 'cvc') {
         computerMove(1000);
     }
-}
-
-export function continueGame() {
-    setState({
-        gameIsRunning: true,
-    });
 }
 
 export function mainMenu() {
@@ -93,26 +78,24 @@ export function mainMenu() {
 }
 
 export function nextRound() {
-    if (getState().gameOver || !getState().roundWon) {
-        return;
-    }
+    const { gameIsRunning, round, currentPlayerMark, gameMode, pcWon } = getState();
+    if (!gameIsRunning) return;
+
     setState({
-        cells: ['', '', '', '', '', '', '', '', ''],
-        round: getState().round + 1,
-        roundWon: false,
+        cells: Array(9).fill(''),
+        round: round + 1,
+        roundIsWon: false,
+        roundIsDraw: false,
     });
     dom.cellElements.forEach(cell => cell.textContent = '');
-    dom.roundElement.textContent = `Round ${getState().round}/5`;
+    dom.roundElement.textContent = `Round ${round + 1}/5`;
     showNextBtn(false);
 
-    dom.playerMarkElement.textContent = getState().currentPlayerMark;
-    dom.messageElement.textContent = "'s turn!"
+    report("'s turn!", currentPlayerMark);
 
     unMarkWinCells();
-    if (getState().pcWon || getState().gameMode == 'cvc') {
-        setState({
-            pcWon: false,
-        });
+    if (pcWon || gameMode === 'cvc') {
+        setState({ pcWon: false });
         computerMove();
     }
 }

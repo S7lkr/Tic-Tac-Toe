@@ -2,13 +2,13 @@
 import * as dom from './dom.js';
 
 // State
-import { getState } from './state.js';
+import { getState, setState } from './state.js';
 
 // functions
 import { gameModeSelector, playerSelector } from './functions/selectors.js';
 import { playerMove } from './functions/moves.js';
 import { cellHover, cellUnHover } from './functions/effects.js';
-import { showHideRules, nextRound, stopGame, resetGame, mainMenu, launchGame, runGame } from './functions/controllers.js';
+import { showHideRules, nextRound, stopGame, resetGame, mainMenu, launchGame } from './functions/controllers.js';
 
 
 main();
@@ -27,7 +27,7 @@ function main() {
         
     // Start Button listener
     dom.startButtonElement.addEventListener('click', launchGame);
-    runGame();
+    setState({ gameIsRunning: true });
 
     // Cell listeners/effects
     dom.cellElements.forEach(cellEl => cellEl.addEventListener('click', playerMove));

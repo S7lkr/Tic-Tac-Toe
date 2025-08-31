@@ -16,11 +16,3 @@ export function cellUnHover(event) {
     cell.textContent = getState().cells[event.target.id];
     cell.style.color = 'black';
 }
-
-export function moveReject(cell) {
-    cell.style.border = '4px solid red';
-    cell.style.borderRadius = '0.1em';
-    setTimeout(() => {
-        cell.style.border = '2px solid black';
-    }, 300);
-}

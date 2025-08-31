@@ -26,8 +26,8 @@ let state = {
     playerSelected: false,
 
     gameIsRunning: false,
-    roundWon: false,
-    gameOver: false,
+    roundIsWon: false,
+    roundIsDraw: false,
 
     pcWon: false,
 }
