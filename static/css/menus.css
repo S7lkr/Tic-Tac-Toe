@@ -1,0 +1,58 @@
+/* ----------Menus---------- */
+
+#main-menu-container {
+    display: flex;
+    justify-content: space-around;
+    max-width: 800px;
+    min-height: 180px;
+    margin: 4em auto;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black;
+}s
+
+.submenu-container {
+    display: flex;
+    max-width: 450px;
+    vertical-align: middle;
+    margin: 1em auto;
+    background-color: antiquewhite;
+}
+
+form {
+    max-width: 200px;
+    font-size: 1.3em;
+    text-align: start;
+    padding: 10px;
+    background-color: #996E89;
+    border-radius: 0.6em;
+    box-shadow: 0.4em 0.4em 0.5em 0 rgb(0, 0, 0, 0.8);
+}
+
+.form-2 {
+    font-family: Arial, Helvetica, sans-serif;
+    min-width: 100px;
+    font-size: 1.4em;
+    box-shadow: 0.4em 0.4em 0.5em 0 rgb(0, 0, 0, 0.8);
+}
+
+.player-option {
+    max-width: 50px;
+}
+
+#show-mode-container {
+    max-width: 63em;
+    margin: 1em auto;
+    text-align: center;
+    font-size: 1.1em;
+    background-color: #996E89;
+    /* box-shadow: 0.4em 0.4em 0.5em 0 rgb(0, 0, 0, 0.8); */
+}
+
+#show-mode-container h4 {
+    text-align: center;
+    padding: 0.1em;
+}
+
+#start-btn-container {
+    text-align: center;
+}

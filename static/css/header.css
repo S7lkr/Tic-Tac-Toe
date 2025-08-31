@@ -1,0 +1,28 @@
+/* ---------Header----------- */
+
+div.header {
+    display: flex;
+    max-width: 100%;
+    justify-content: center;
+    margin: 0 auto;
+    background-color: black;
+    gap: 2em;
+    padding-top: 0.5em;
+}
+
+#word1 {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: yellow;
+}
+
+#word2 {
+    font-family: 'Courier New', Courier, monospace;
+    color: forestgreen;
+}
+
+#word3 {
+    font-style: italic;
+    font-weight: bold;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: royalblue;
+}
