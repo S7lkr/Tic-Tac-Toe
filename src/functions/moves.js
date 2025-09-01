@@ -1,7 +1,7 @@
 import { cellElements, playerMarkElement } from "../dom.js";
 import { setState, getState } from "../state.js";
-import { winCheck } from "./winCheckers.js";
-import { gameOverRoundWin } from "./winCheckers.js";
+import { winCheck } from "./winValidators.js";
+import { gameOverRoundWin } from "./winValidators.js";
 
 
 const cellEmpty = (cell) => cell.textContent === '' || cell.textContent === 'x' || cell.textContent === 'o';

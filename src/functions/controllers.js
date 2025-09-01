@@ -2,7 +2,7 @@ import * as dom from '../dom.js';
 import { setState, getState } from "../state.js";
 import { computerMove } from './moves.js';
 import { unMarkWinCells } from './markers.js';
-import { report } from './winCheckers.js';
+import { report } from './winValidators.js';
 
 
 export function showHideRules () {
