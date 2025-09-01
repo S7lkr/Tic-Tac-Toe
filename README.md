@@ -6,7 +6,7 @@ TicTacToe is a small JS game where it takes one or two players to play. The goal
 This project's developement started on my **JS Front-End studying program** in SoftUni at the summer of 2024 as a training, honing and improving my knowledge, practice and control with HTML, CSS, JS and DOM elements. it's currently in pre-lapha v1.0.0 version but its development continues on. I hope you like it :>
 
 ### Test/Play here:
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Render-blue?style=for-the-badge&logo=render)](https://tic-tac-toe-g7rf.onrender.com)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Render-blue?style=for-the-badge&logo=render)](https://tic-tac-toe-e1nv.onrender.com)
 
 
 ### Download repo guide:
