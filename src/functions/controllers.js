@@ -87,7 +87,7 @@ export function nextRound() {
         round: round + 1,
         roundIsWon: false,
         roundIsDraw: false,
-        pcWon: false,
+        // pcWon: false,
     });
     dom.cellElements.forEach(cell => cell.textContent = '');
     dom.roundElement.textContent = `Round ${round + 1}/5`;
@@ -97,7 +97,6 @@ export function nextRound() {
 
     unMarkWinCells();
     if (pcWon || gameMode === 'cvc') {
-        setState({ pcWon: false });
         computerMove();
     }
 }
