@@ -11,8 +11,6 @@ export const gameOverRoundWin = () => {
 
 const lessThan3moves = (playedCells) => playedCells < 3;
 
-const clearPlayerMark = () => dom.playerMarkElement.textContent = '';
-
 // printer
 export const report = (message, plMark='') => {
     dom.messageElement.textContent = message;
@@ -51,25 +49,22 @@ const scoreChanger = (currPlMark, xS, oS) => {
     }
 }
 
-const roundDraw = (round, xS, oS, playedCells) => {  
+const roundDraw = (round, xS, oS, playedCells) => {
     if (round === 5 && playedCells === 9) {
-        if (xS === oS) {
-            setState({ gameIsRunning: false });
-            report('Game Over! Draw!');
-        } else if (xS > oS) {
+        if (xS > oS) {
             report(' is the Winner', 'X');
-        } else {
+        } else if (xS < oS) {
             report(' is the Winner!', 'O');
+        } else {
+            report('Game Over! Draw!');
         }
         setState({ gameIsRunning: false });
         return;
     } else {
         setState({ roundIsDraw: true });
         report('Round Draw!');
-        clearPlayerMark();
         showNextBtn();
     }
-    clearPlayerMark();
 
     return true;
 }
@@ -95,7 +90,6 @@ const roundWon = (currentPlayerMark, xS, oS, round) => {
     if (x === 3 || o === 3) {
         report(' is the Winner!!', currentPlayerMark);
         setState({ gameIsRunning: false });
-        // dom.nextRoundButtonElement.id = 'next-22';
     } else {
         report(' wins the Round!', currentPlayerMark);
         showNextBtn(true);
@@ -116,13 +110,14 @@ export function winCheck() {
     // Win/Draw check
     winDrawCheck(cells, playedCells, winCombos);    
 
-    if (getState().roundIsDraw) {
+    const { roundIsDraw, roundIsWon } = getState();
+    if (roundIsDraw) {
         // Draw
         if (roundDraw(round, xS, oS, playedCells)) {
             return;
         }
     }
-    if (getState().roundIsWon) {     
+    if (roundIsWon) {
         // player or pc won the round
         setState({ pcWon: initialPlayerMark != currentPlayerMark ? true : false });
         // Win
